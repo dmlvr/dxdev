@@ -504,7 +504,7 @@
             const oldLink = document.getElementById('theme-stylesheet');
             const newLink = oldLink.cloneNode();
 
-            newLink.href = `artifacts/css/dx.${themeId}.css`;
+            newLink.href = `css/dx.${themeId}.css`;
             newLink.onload = () => {
               oldLink.remove();
               resolve();

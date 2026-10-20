@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>dxAccordion states - fluent-next spike</title>
+    <!-- The theme, fonts and scripts are reused from the neighbour spike -->
+    <link rel="stylesheet" type="text/css" href="artifacts/css/dx.fluent-next.blue.light.css" />
+    <script type="text/javascript" src="artifacts/js/jquery.js"></script>
+    <script type="text/javascript" src="artifacts/js/dx.all.debug.js" charset="utf-8"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: var(--dxds-spacing-300, 1.875rem) var(--dxds-spacing-200, 1.25rem);
+            background: var(--dxds-color-bg-neutral-default, var(--dx-color-main-bg));
+        }
+
+        .page {
+            max-width: 45rem;
+            margin: 0 auto;
+            margin-top: var(--dxds-spacing-300, 1.875rem);
+        }
+
+        .example {
+            margin-bottom: var(--dxds-spacing-300, 1.875rem);
+            background: rgb(238, 237, 237);
+            padding: var(--dxds-spacing-200, 1.25rem);
+            border-radius: var(--dxds-border-radius-100, 0.25rem);
+        }
+
+        .example h2 {
+            margin: 0 0 var(--dxds-spacing-60, 0.375rem);
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="example">
+            <h2>1. One item, collapsed (selectedIndex: -1)</h2>
+            <div id="accordion-1"></div>
+        </div>
+
+        <div class="example">
+            <h2>2. One item, expanded (default selectedIndex: 0)</h2>
+            <div id="accordion-2"></div>
+        </div>
+
+        <div class="example">
+            <h2>3. Four items: 1 and 3 collapsed, 2 and 4 expanded (multiple: true, selectedItems)</h2>
+            <div id="accordion-3"></div>
+        </div>
+    </div>
+
+    <script>
+        $(() => {
+            const itemTemplate = (data, _, element) => { $('<div>').text(`Body of "${data.title}".`).appendTo(element); };
+
+            const items = [
+                { title: 'getWeather' },
+                { title: 'getCurrentTime' },
+                { title: 'getExchangeRate' },
+                { title: 'getStockPrice' },
+            ];
+
+            $('#accordion-1').dxAccordion({
+                dataSource: [items[0]],
+                itemTemplate,
+                collapsible: true,
+                selectedIndex: -1,
+            });
+
+            $('#accordion-2').dxAccordion({
+                dataSource: [items[1]],
+                itemTemplate,
+                collapsible: true,
+            });
+
+            $('#accordion-3').dxAccordion({
+                dataSource: items,
+                itemTemplate,
+                collapsible: true,
+                multiple: true,
+                selectedItems: [items[1], items[3]],
+            });
+        });
+    </script>
+</body>
+</html>

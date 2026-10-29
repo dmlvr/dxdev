@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+  <head>
+    <title>DevExtreme Chat: Tool Call Visualization</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <script>
+      // The theme is taken from ?theme=<name> (for example ?theme=material.blue.dark), the default is Fluent Next
+      const themeName = new URLSearchParams(location.search).get('theme') || 'fluent-next.blue.light';
+      const themeFile = `dx.${themeName.replace(/^generic\./, '')}.css`;
+      document.write(`<link rel="stylesheet" type="text/css" href="css/${themeFile}" />`);
+      document.documentElement.dataset.theme = themeName;
+    </script>
+    <script src="lib/jquery.js"></script>
+    <script src="lib/dx.all.js"></script>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="data.js"></script>
+    <script src="index.js"></script>
+  </head>
+  <body class="dx-viewport">
+    <div class="demo-container">
+      <div class="ai-chat-card">
+        <div id="dx-ai-chat-toolbar"></div>
+        <div id="dx-ai-chat"></div>
+      </div>
+      <div class="options">
+        <div class="caption">Options</div>
+        <div class="option">
+          <div id="theme-select"></div>
+        </div>
+        <div class="option-group">
+          <div id="expand-all"></div>
+          <div id="show-in-message-template"></div>
+          <div id="use-message-template"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

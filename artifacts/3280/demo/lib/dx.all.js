@@ -1,4 +1,4 @@
-/*!
+git /*!
 * DevExtreme (dx.all.js)
 * Version: 26.2.0
 * Build date: Mon Nov 02 2026
@@ -21570,8 +21570,7 @@ const defaultMessages = exports.defaultMessages = {
     "dxChat-toolCallResultLabel": "Result",
     "dxChat-toolCallsTitle": "{0} tools",
     "dxChat-toolCallError": "Error",
-    "dxChat-toolCallsErrorSingle": "{0} Error",
-    "dxChat-toolCallsErrorMultiple": "{0} Errors",
+    "dxChat-toolCallsErrorMultiple": "{0} errors",
     "dxColorView-ariaRed": "Red",
     "dxColorView-ariaGreen": "Green",
     "dxColorView-ariaBlue": "Blue",
@@ -165805,7 +165804,6 @@ var _guid = _interopRequireDefault(__webpack_require__(19427));
 var _renderer = _interopRequireDefault(__webpack_require__(64553));
 var _accordion = _interopRequireDefault(__webpack_require__(30543));
 var _text_area = _interopRequireDefault(__webpack_require__(23116));
-var _icon = __webpack_require__(31391);
 var _dom_component = _interopRequireDefault(__webpack_require__(22331));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 const CHAT_TOOL_CALL_CLASSES = exports.CHAT_TOOL_CALL_CLASSES = {
@@ -165820,7 +165818,17 @@ const CHAT_TOOL_CALL_CLASSES = exports.CHAT_TOOL_CALL_CLASSES = {
   result: 'dx-chat-tool-call-result',
   error: 'dx-chat-tool-call-error'
 };
-const stringifyValue = value => typeof value === 'string' ? value : JSON.stringify(value, null, 2);
+const stringifyValue = value => {
+  if (typeof value === 'string') {
+    return value;
+  }
+  try {
+    return JSON.stringify(value, null, 2);
+  } catch {
+    // a circular structure or a BigInt cannot be serialized
+    return String(value);
+  }
+};
 class ToolCallView extends _dom_component.default {
   _getDefaultOptions() {
     return Object.assign({}, super._getDefaultOptions(), {
@@ -165880,13 +165888,13 @@ class ToolCallView extends _dom_component.default {
     const $header = (0, _renderer.default)('<div>').addClass(CHAT_TOOL_CALL_CLASSES.header).appendTo(this.$element());
     (0, _renderer.default)('<span>').text(_message.default.format('dxChat-toolCallsTitle', toolCalls.length)).appendTo($header);
     if (errorCount) {
-      const errorKey = errorCount === 1 ? 'dxChat-toolCallsErrorSingle' : 'dxChat-toolCallsErrorMultiple';
-      this._renderErrorTag(_message.default.format(errorKey, errorCount), $header);
+      const errorText = errorCount === 1 ? `${errorCount} ${_message.default.format('dxChat-toolCallError')}` : _message.default.format('dxChat-toolCallsErrorMultiple', errorCount);
+      this._renderErrorTag(errorText, $header);
     }
   }
   _renderTitle(call, container) {
     const $container = (0, _renderer.default)(container);
-    (0, _renderer.default)('<span>').addClass(_icon.ICON_CLASS).addClass(`${_icon.ICON_CLASS}-wrench`).addClass(CHAT_TOOL_CALL_CLASSES.icon).appendTo($container);
+    (0, _renderer.default)('<span>').addClass(CHAT_TOOL_CALL_CLASSES.icon).appendTo($container);
     (0, _renderer.default)('<span>').addClass(CHAT_TOOL_CALL_CLASSES.name).text(call.name).appendTo($container);
     if (call.status === 'error') {
       this._renderErrorTag(_message.default.format('dxChat-toolCallError'), $container);
@@ -165913,7 +165921,6 @@ class ToolCallView extends _dom_component.default {
     this._createComponent((0, _renderer.default)('<div>').appendTo($field), _text_area.default, {
       value,
       readOnly: true,
-      stylingMode: 'outlined',
       autoResizeEnabled: true,
       focusStateEnabled: false,
       hoverStateEnabled: false,

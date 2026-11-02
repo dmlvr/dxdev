@@ -1,4 +1,4 @@
-git /*!
+/*!
 * DevExtreme (dx.all.js)
 * Version: 26.2.0
 * Build date: Mon Nov 02 2026

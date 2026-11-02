@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.all.js)
 * Version: 26.2.0
-* Build date: Thu Oct 29 2026
+* Build date: Mon Nov 02 2026
 *
 * Copyright (c) 2012 - 2026 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -22019,6 +22019,7 @@ const defaultMessages = exports.defaultMessages = {
     "dxGantt-showDependencies": "Show Dependencies",
     "dxGantt-dialogStartDateValidation": "Start date must be after {0}",
     "dxGantt-dialogEndDateValidation": "End date must be after {0}",
+    "dxMap-markerAriaLabel": "Map marker",
     "dxGallery-itemName": "Gallery item",
     "dxMultiView-elementAriaRoleDescription": "MultiView",
     "dxMultiView-elementAriaLabel": "Use the arrow keys or swipe to navigate between views",

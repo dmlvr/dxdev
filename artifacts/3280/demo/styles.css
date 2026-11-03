@@ -101,13 +101,6 @@
   pointer-events: none;
 }
 
-.custom-template-label {
-  margin-bottom: 4px;
-  opacity: 0.6;
-  font-family: monospace;
-  font-size: 11px;
-}
-
 .options {
   padding: 20px;
   display: flex;
@@ -123,6 +116,14 @@
 .options .caption {
   font-size: 18px;
   font-weight: 500;
+}
+
+.option-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 32px;
 }
 
 .option-group {

@@ -13,6 +13,7 @@ const user = {
 const assistant = {
   id: 'assistant',
   name: 'AI Assistant',
+  avatarUrl: 'icons/ai-avatar.svg',
 };
 
 const themes = [
@@ -41,6 +42,16 @@ const suggestionCards = [
     title: 'Exchange Rate',
     description: 'Find out the current exchange rate from USD to EUR.',
     prompt: 'Check the current exchange rate from USD to EUR.',
+  },
+  {
+    title: 'Several Tools',
+    description: 'Get the weather in London, the time in Barcelona and the USD to EUR rate at once.',
+    prompt: 'Check the weather in London, the current time in Barcelona, Spain and the exchange rate from USD to EUR.',
+  },
+  {
+    title: 'Error State',
+    description: 'Check the weather in London and in Atlantis: one of the tools fails.',
+    prompt: 'Check the current weather conditions in London, UK and in Atlantis, Atlantis.',
   },
 ];
 

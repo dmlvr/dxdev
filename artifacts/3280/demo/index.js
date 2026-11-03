@@ -193,23 +193,6 @@ $(() => {
       });
   }
 
-  // The template of the message content: it is used to show how the tool calls behave next to a template
-  function renderMessageContent(message, element) {
-    $('<div>')
-      .addClass('custom-template-label')
-      .text('messageTemplate')
-      .appendTo(element);
-
-    $('<div>')
-      .addClass('chat-messagebubble-text')
-      .text(message.text)
-      .appendTo(element);
-  }
-
-  function renderMessageTemplate(data, element) {
-    renderMessageContent(data.message, element);
-  }
-
   const customStore = new DevExpress.data.CustomStore({
     key: 'id',
     load: () => {
@@ -260,7 +243,7 @@ $(() => {
     height: 710,
     dataSource,
     reloadOnChange: false,
-    showAvatar: false,
+    showAvatar: true,
     showDayHeaders: false,
     speechToTextEnabled: true,
     onMessageEntered: (e) => {
@@ -310,22 +293,6 @@ $(() => {
     value: false,
     onValueChanged: ({ value }) => {
       instance.option('toolCallOptions.expandAll', value);
-    },
-  });
-
-  $('#show-in-message-template').dxCheckBox({
-    text: 'toolCallOptions.showInMessageTemplate',
-    value: false,
-    onValueChanged: ({ value }) => {
-      instance.option('toolCallOptions.showInMessageTemplate', value);
-    },
-  });
-
-  $('#use-message-template').dxCheckBox({
-    text: 'messageTemplate',
-    value: false,
-    onValueChanged: ({ value }) => {
-      instance.option('messageTemplate', value ? renderMessageTemplate : null);
     },
   });
 });

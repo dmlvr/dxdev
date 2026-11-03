@@ -165803,6 +165803,7 @@ var _guid = _interopRequireDefault(__webpack_require__(19427));
 var _renderer = _interopRequireDefault(__webpack_require__(64553));
 var _accordion = _interopRequireDefault(__webpack_require__(30543));
 var _text_area = _interopRequireDefault(__webpack_require__(23116));
+var _icon = __webpack_require__(31391);
 var _dom_component = _interopRequireDefault(__webpack_require__(22331));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 const CHAT_TOOL_CALL_CLASSES = exports.CHAT_TOOL_CALL_CLASSES = {
@@ -165881,7 +165882,7 @@ class ToolCallView extends _dom_component.default {
   }
   _renderTitle(call, container) {
     const $container = (0, _renderer.default)(container);
-    (0, _renderer.default)('<span>').addClass(CHAT_TOOL_CALL_CLASSES.icon).appendTo($container);
+    (0, _renderer.default)('<span>').addClass(_icon.ICON_CLASS).addClass(`${_icon.ICON_CLASS}-wrench`).addClass(CHAT_TOOL_CALL_CLASSES.icon).appendTo($container);
     (0, _renderer.default)('<span>').addClass(CHAT_TOOL_CALL_CLASSES.name).text(call.name).appendTo($container);
     if (call.status === 'error') {
       this._renderErrorTag(_message.default.format('dxChat-toolCallError'), $container);
@@ -165908,6 +165909,7 @@ class ToolCallView extends _dom_component.default {
     this._createComponent((0, _renderer.default)('<div>').appendTo($field), _text_area.default, {
       value,
       readOnly: true,
+      stylingMode: 'outlined',
       autoResizeEnabled: true,
       focusStateEnabled: false,
       hoverStateEnabled: false,

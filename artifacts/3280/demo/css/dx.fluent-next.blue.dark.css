@@ -4681,10 +4681,6 @@
   display: flex;
   flex-direction: column;
 }
-.dx-chat-tool-call-view .dx-chat-tool-call-header {
-  display: flex;
-  align-items: center;
-}
 .dx-chat-tool-call-view .dx-chat-tool-call-icon {
   display: inline-flex;
   flex: none;
@@ -5131,9 +5127,9 @@
   gap: var(--dx-chat-tool-call-row-gap);
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-header {
-  gap: var(--dx-chat-tool-call-gap);
   padding: var(--dx-chat-tool-call-padding);
   font-weight: var(--dx-chat-tool-call-header-font-weight);
+  line-height: var(--dx-chat-tool-call-icon-size);
 }
 .dx-chat-tool-call-view .dx-accordion-item-title {
   gap: var(--dx-chat-tool-call-gap);
@@ -5187,6 +5183,7 @@
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-state-hover, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-state-focused, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-state-active, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-state-readonly {
   border: var(--dx-chat-tool-call-field-border-width) solid var(--dx-chat-tool-call-border);
+  box-shadow: none;
   background-color: transparent;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined .dx-texteditor-input {

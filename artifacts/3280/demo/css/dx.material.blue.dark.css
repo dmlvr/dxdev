@@ -3259,10 +3259,6 @@
   display: flex;
   flex-direction: column;
 }
-.dx-chat-tool-call-view .dx-chat-tool-call-header {
-  display: flex;
-  align-items: center;
-}
 .dx-chat-tool-call-view .dx-chat-tool-call-icon {
   display: inline-flex;
   flex: none;
@@ -3756,6 +3752,25 @@
 
 .dx-chat-messagebubble:has(> .dx-chat-tool-call-view) {
   gap: 4px;
+  padding: 8px 12px;
+}
+
+.dx-chat-messagebubble:where(:has(> .dx-chat-tool-call-view)) {
+  border-radius: 12px;
+}
+
+.dx-chat-messagegroup-alignment-start .dx-chat-messagebubble:has(> .dx-chat-tool-call-view):first-child {
+  border-start-start-radius: 12px;
+}
+.dx-chat-messagegroup-alignment-start .dx-chat-messagebubble:has(> .dx-chat-tool-call-view):last-child {
+  border-end-start-radius: 12px;
+}
+
+.dx-chat-messagegroup-alignment-end .dx-chat-messagebubble:has(> .dx-chat-tool-call-view):first-child {
+  border-start-end-radius: 12px;
+}
+.dx-chat-messagegroup-alignment-end .dx-chat-messagebubble:has(> .dx-chat-tool-call-view):last-child {
+  border-end-end-radius: 12px;
 }
 
 .dx-chat-tool-call-view {
@@ -3772,9 +3787,9 @@
   gap: 2px;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-header {
-  gap: 4px;
   padding: 6px;
   font-weight: 500;
+  line-height: 20px;
 }
 .dx-chat-tool-call-view .dx-accordion-item-title {
   gap: 4px;
@@ -3813,7 +3828,7 @@
   margin-inline-start: 15px;
   padding-block: 4px 8px;
   padding-inline: 14px 8px;
-  border-inline-start: 1px solid #515159;
+  border-inline-start: 1px solid rgba(255, 255, 255, 0.12);
 }
 .dx-chat-tool-call-view + .dx-chat-messagebubble-content {
   padding: 4px 6px 10px;
@@ -3827,7 +3842,8 @@
   color: #fff;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-state-hover, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-state-focused, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-state-active, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-state-readonly {
-  border: 1px solid #515159;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: none;
   background-color: transparent;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined .dx-texteditor-input {

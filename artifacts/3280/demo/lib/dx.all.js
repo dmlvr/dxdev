@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.all.js)
 * Version: 26.2.0
-* Build date: Mon Nov 02 2026
+* Build date: Tue Nov 03 2026
 *
 * Copyright (c) 2012 - 2026 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -21570,7 +21570,6 @@ const defaultMessages = exports.defaultMessages = {
     "dxChat-toolCallResultLabel": "Result",
     "dxChat-toolCallsTitle": "{0} tools",
     "dxChat-toolCallError": "Error",
-    "dxChat-toolCallsErrorMultiple": "{0} errors",
     "dxColorView-ariaRed": "Red",
     "dxColorView-ariaGreen": "Green",
     "dxColorView-ariaBlue": "Blue",
@@ -165825,7 +165824,6 @@ const stringifyValue = value => {
   try {
     return JSON.stringify(value, null, 2);
   } catch {
-    // a circular structure or a BigInt cannot be serialized
     return String(value);
   }
 };
@@ -165879,18 +165877,7 @@ class ToolCallView extends _dom_component.default {
     });
   }
   _renderHeader(toolCalls) {
-    const errorCount = toolCalls.filter(_ref4 => {
-      let {
-        status
-      } = _ref4;
-      return status === 'error';
-    }).length;
-    const $header = (0, _renderer.default)('<div>').addClass(CHAT_TOOL_CALL_CLASSES.header).appendTo(this.$element());
-    (0, _renderer.default)('<span>').text(_message.default.format('dxChat-toolCallsTitle', toolCalls.length)).appendTo($header);
-    if (errorCount) {
-      const errorText = errorCount === 1 ? `${errorCount} ${_message.default.format('dxChat-toolCallError')}` : _message.default.format('dxChat-toolCallsErrorMultiple', errorCount);
-      this._renderErrorTag(errorText, $header);
-    }
+    (0, _renderer.default)('<div>').addClass(CHAT_TOOL_CALL_CLASSES.header).text(_message.default.format('dxChat-toolCallsTitle', toolCalls.length)).appendTo(this.$element());
   }
   _renderTitle(call, container) {
     const $container = (0, _renderer.default)(container);

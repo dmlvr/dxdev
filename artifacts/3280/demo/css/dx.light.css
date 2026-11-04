@@ -3177,6 +3177,15 @@
   position: static;
   order: 1;
   flex: none;
+  transform: rotate(-90deg);
+}
+.dx-chat-tool-call-view .dx-rtl .dx-accordion-item-title::before {
+  transform: rotate(90deg);
+}
+.dx-chat-tool-call-view .dx-accordion-item.dx-accordion-item-opened > .dx-accordion-item-title::before,
+.dx-chat-tool-call-view .dx-rtl .dx-accordion-item.dx-accordion-item-opened > .dx-accordion-item-title::before {
+  content: "\f016";
+  transform: none;
 }
 .dx-chat-tool-call-view .dx-accordion-item-title-caption {
   margin-inline-end: 0;
@@ -3703,11 +3712,11 @@
   padding: 6px;
   font-size: 14px;
   line-height: 1.35715;
-  color: rgb(52%, 52%, 52%);
+  color: #757575;
 }
 .dx-chat-tool-call-view .dx-accordion-item-title::before {
   font-size: 20px;
-  color: rgb(52%, 52%, 52%);
+  color: #757575;
 }
 .dx-chat-tool-call-view .dx-accordion-item.dx-state-hover > .dx-accordion-item-title {
   color: #333;
@@ -3727,7 +3736,7 @@
   font-size: 12px;
   line-height: 1.3333;
   font-weight: normal;
-  color: #d9534f;
+  color: #932320;
   background-color: rgba(217, 83, 79, 0.1);
 }
 .dx-chat-tool-call-view .dx-accordion-item-body {
@@ -3763,7 +3772,7 @@
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-hover, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-focused, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-active, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-readonly {
   border-width: 0;
   background-color: rgba(217, 83, 79, 0.1);
-  color: #d9534f;
+  color: #932320;
 }
 
 .dx-chat-file {

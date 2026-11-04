@@ -4673,6 +4673,15 @@
   position: static;
   order: 1;
   flex: none;
+  transform: rotate(-90deg);
+}
+.dx-chat-tool-call-view .dx-rtl .dx-accordion-item-title::before {
+  transform: rotate(90deg);
+}
+.dx-chat-tool-call-view .dx-accordion-item.dx-accordion-item-opened > .dx-accordion-item-title::before,
+.dx-chat-tool-call-view .dx-rtl .dx-accordion-item.dx-accordion-item-opened > .dx-accordion-item-title::before {
+  content: "\f016";
+  transform: none;
 }
 .dx-chat-tool-call-view .dx-accordion-item-title-caption {
   margin-inline-end: 0;

@@ -3785,7 +3785,7 @@
   line-height: 1.3333;
   font-weight: normal;
   color: rgb(227, 125, 128);
-  background-color: rgba(227, 125, 128, 0.1);
+  background-color: #590815;
 }
 .dx-chat-tool-call-view .dx-accordion-item-body {
   gap: 8px;
@@ -3819,7 +3819,7 @@
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-hover, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-focused, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-active, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-readonly {
   border-width: 0;
-  background-color: rgba(227, 125, 128, 0.1);
+  background-color: #590815;
   color: rgb(227, 125, 128);
 }
 

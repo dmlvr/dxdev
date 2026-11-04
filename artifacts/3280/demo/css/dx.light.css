@@ -3712,11 +3712,11 @@
   padding: 6px;
   font-size: 14px;
   line-height: 1.35715;
-  color: #757575;
+  color: #707070;
 }
 .dx-chat-tool-call-view .dx-accordion-item-title::before {
   font-size: 20px;
-  color: #757575;
+  color: #707070;
 }
 .dx-chat-tool-call-view .dx-accordion-item.dx-state-hover > .dx-accordion-item-title {
   color: #333;

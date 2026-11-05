@@ -6,9 +6,12 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
     <script>
-      // The theme is taken from ?theme=<name> (for example ?theme=material.blue.dark), the default is Fluent Next
-      const themeName = new URLSearchParams(location.search).get('theme') || 'fluent-next.blue.light';
-      const themeFile = `dx.${themeName.replace(/^generic\./, '')}.css`;
+      // The theme is taken from ?theme=<name> (for example ?theme=material.blue.dark), the default is Fluent Next.
+      // ?compact=true loads the compact version of the theme. The names are the same as in the Storybook themes.
+      const params = new URLSearchParams(location.search);
+      const themeName = (params.get('theme') || 'fluent-next.blue.light').replace(/^generic\./, '');
+      const compact = params.get('compact') === 'true';
+      const themeFile = `dx.${themeName}${compact ? '.compact' : ''}.css`;
       document.write(`<link rel="stylesheet" type="text/css" href="css/${themeFile}" />`);
       document.documentElement.dataset.theme = themeName;
     </script>
@@ -29,6 +32,7 @@
         <div class="option-row">
           <div class="option-group">
             <div id="expand-all"></div>
+            <div id="compact"></div>
           </div>
           <div class="option">
             <div id="theme-select"></div>

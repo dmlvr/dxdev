@@ -277,13 +277,24 @@ $(() => {
     items: themes,
     displayExpr: 'text',
     valueExpr: 'value',
-    value: new URLSearchParams(window.location.search).get('theme') || 'fluent-next.blue.light',
+    value: (new URLSearchParams(window.location.search).get('theme') || 'fluent-next.blue.light').replace(/^generic\./, ''),
     width: 280,
     // Some widget settings depend on the theme when a widget is created, so the page is loaded again
     onValueChanged: ({ value }) => {
       const params = new URLSearchParams(window.location.search);
 
       params.set('theme', value);
+      window.location.search = params.toString();
+    },
+  });
+
+  $('#compact').dxCheckBox({
+    text: 'Compact',
+    value: new URLSearchParams(window.location.search).get('compact') === 'true',
+    onValueChanged: ({ value }) => {
+      const params = new URLSearchParams(window.location.search);
+
+      params.set('compact', value);
       window.location.search = params.toString();
     },
   });

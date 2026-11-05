@@ -1,7 +1,7 @@
 /*!
 * DevExtreme (dx.all.js)
 * Version: 26.2.0
-* Build date: Tue Nov 03 2026
+* Build date: Thu Nov 05 2026
 *
 * Copyright (c) 2012 - 2026 Developer Express Inc. ALL RIGHTS RESERVED
 * Read about DevExtreme licensing here: https://js.devexpress.com/Licensing/
@@ -165789,6 +165789,34 @@ var _default = exports["default"] = Suggestions;
 
 /***/ },
 
+/***/ 11615
+(__unused_webpack_module, exports, __webpack_require__) {
+
+
+
+Object.defineProperty(exports, "__esModule", ({
+  value: true
+}));
+exports["default"] = void 0;
+__webpack_require__(23116);
+var _text_area2 = _interopRequireDefault(__webpack_require__(8738));
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+class ToolCallTextArea extends _text_area2.default {
+  _getAdjustedMaxHeight(maxHeight) {
+    return maxHeight;
+  }
+  _getMaxHeight() {
+    const cssValue = this._input().css('maxHeight');
+    if (!cssValue || cssValue === 'none') {
+      return undefined;
+    }
+    return parseFloat(cssValue);
+  }
+}
+var _default = exports["default"] = ToolCallTextArea;
+
+/***/ },
+
 /***/ 79729
 (__unused_webpack_module, exports, __webpack_require__) {
 
@@ -165802,9 +165830,9 @@ var _message = _interopRequireDefault(__webpack_require__(4671));
 var _guid = _interopRequireDefault(__webpack_require__(19427));
 var _renderer = _interopRequireDefault(__webpack_require__(64553));
 var _accordion = _interopRequireDefault(__webpack_require__(30543));
-var _text_area = _interopRequireDefault(__webpack_require__(23116));
 var _icon = __webpack_require__(31391);
 var _dom_component = _interopRequireDefault(__webpack_require__(22331));
+var _tool_call_text_area = _interopRequireDefault(__webpack_require__(11615));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 const CHAT_TOOL_CALL_CLASSES = exports.CHAT_TOOL_CALL_CLASSES = {
   view: 'dx-chat-tool-call-view',
@@ -165906,7 +165934,7 @@ class ToolCallView extends _dom_component.default {
     const labelId = `dx-${new _guid.default()}`;
     const $field = (0, _renderer.default)('<div>').addClass(CHAT_TOOL_CALL_CLASSES.field).addClass(fieldClass).appendTo(container);
     (0, _renderer.default)('<div>').attr('id', labelId).addClass(CHAT_TOOL_CALL_CLASSES.fieldLabel).text(labelText).appendTo($field);
-    this._createComponent((0, _renderer.default)('<div>').appendTo($field), _text_area.default, {
+    this._createComponent((0, _renderer.default)('<div>').appendTo($field), _tool_call_text_area.default, {
       value,
       readOnly: true,
       stylingMode: 'outlined',

@@ -17,14 +17,30 @@ const assistant = {
 };
 
 const themes = [
-  { value: 'fluent-next.blue.light', text: 'Fluent Next (Blue Light)' },
-  { value: 'fluent-next.blue.dark', text: 'Fluent Next (Blue Dark)' },
-  { value: 'fluent.blue.light', text: 'Fluent (Blue Light)' },
-  { value: 'fluent.blue.dark', text: 'Fluent (Blue Dark)' },
-  { value: 'material.blue.light', text: 'Material (Blue Light)' },
-  { value: 'material.blue.dark', text: 'Material (Blue Dark)' },
-  { value: 'generic.light', text: 'Generic (Light)' },
-  { value: 'generic.dark', text: 'Generic (Dark)' },
+  { value: 'light', text: 'Generic Light' },
+  { value: 'dark', text: 'Generic Dark' },
+  { value: 'carmine', text: 'Generic Carmine' },
+  { value: 'softblue', text: 'Generic Soft Blue' },
+  { value: 'darkmoon', text: 'Generic Dark Moon' },
+  { value: 'darkviolet', text: 'Generic Dark Violet' },
+  { value: 'greenmist', text: 'Generic Green Mist' },
+  { value: 'contrast', text: 'Generic Contrast' },
+  { value: 'material.blue.light', text: 'Material Blue Light' },
+  { value: 'material.blue.dark', text: 'Material Blue Dark' },
+  { value: 'material.lime.light', text: 'Material Lime Light' },
+  { value: 'material.lime.dark', text: 'Material Lime Dark' },
+  { value: 'material.orange.light', text: 'Material Orange Light' },
+  { value: 'material.orange.dark', text: 'Material Orange Dark' },
+  { value: 'material.purple.light', text: 'Material Purple Light' },
+  { value: 'material.purple.dark', text: 'Material Purple Dark' },
+  { value: 'material.teal.light', text: 'Material Teal Light' },
+  { value: 'material.teal.dark', text: 'Material Teal Dark' },
+  { value: 'fluent.blue.light', text: 'Fluent Blue Light' },
+  { value: 'fluent.blue.dark', text: 'Fluent Blue Dark' },
+  { value: 'fluent.saas.light', text: 'Fluent Saas Light' },
+  { value: 'fluent.saas.dark', text: 'Fluent Saas Dark' },
+  { value: 'fluent-next.blue.light', text: 'Fluent Next Blue Light' },
+  { value: 'fluent-next.blue.dark', text: 'Fluent Next Blue Dark' },
 ];
 
 const suggestionCards = [

@@ -5093,12 +5093,20 @@
 .dx-chat.dx-state-disabled .dx-chat-tool-call-view,
 .dx-chat.dx-state-disabled .dx-chat-tool-call-field-label,
 .dx-chat.dx-state-disabled .dx-chat-tool-call-error-tag,
-.dx-chat.dx-state-disabled .dx-chat-tool-call-field .dx-texteditor,
+.dx-chat.dx-state-disabled .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined,
 .dx-state-disabled .dx-chat .dx-chat-messagebubble,
 .dx-state-disabled .dx-chat .dx-chat-tool-call-view,
 .dx-state-disabled .dx-chat .dx-chat-tool-call-field-label,
 .dx-state-disabled .dx-chat .dx-chat-tool-call-error-tag,
-.dx-state-disabled .dx-chat .dx-chat-tool-call-field .dx-texteditor {
+.dx-state-disabled .dx-chat .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined {
+  color: var(--dx-chat-content-disabled);
+}
+.dx-chat.dx-state-disabled .dx-chat-tool-call-view .dx-accordion-item-title,
+.dx-chat.dx-state-disabled .dx-chat-tool-call-view .dx-accordion-item-title::before,
+.dx-chat.dx-state-disabled .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-readonly,
+.dx-state-disabled .dx-chat .dx-chat-tool-call-view .dx-accordion-item-title,
+.dx-state-disabled .dx-chat .dx-chat-tool-call-view .dx-accordion-item-title::before,
+.dx-state-disabled .dx-chat .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-readonly {
   color: var(--dx-chat-content-disabled);
 }
 .dx-chat.dx-state-disabled .dx-chat-messagelist-day-header,
@@ -5200,12 +5208,13 @@
   font-family: var(--dx-chat-tool-call-field-font-family);
   font-size: var(--dx-chat-tool-call-font-size);
   line-height: var(--dx-chat-tool-call-line-height);
+  max-height: var(--dx-chat-tool-call-field-max-height);
   color: inherit;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-hover, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-focused, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-active, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-readonly {
-  border-width: 0;
   background-color: var(--dx-chat-tool-call-error-bg);
   color: var(--dx-chat-tool-call-error-content);
+  border-width: 0;
 }
 
 .dx-button-disabled {
@@ -31715,6 +31724,7 @@ td[style*="text-align: right"] .dx-command-ai-header-button {
   --dx-chat-tool-call-field-border-radius: var(--dxds-border-radius-80);
   --dx-chat-tool-call-field-border-width: var(--dxds-border-width-10);
   --dx-chat-tool-call-field-font-family: var(--dxds-font-family-mono);
+  --dx-chat-tool-call-field-max-height: 10em;
   --dx-chat-tool-call-field-padding: var(--dxds-spacing-60) var(--dxds-spacing-120);
   --dx-chat-tool-call-font-size: var(--dxds-font-size-base-md);
   --dx-chat-tool-call-gap: var(--dxds-spacing-40);

@@ -3860,12 +3860,13 @@
   font-family: Consolas, "Courier New", monospace;
   font-size: 14px;
   line-height: 1.4286;
+  max-height: 10em;
   color: inherit;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-hover, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-focused, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-active, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-readonly {
-  border-width: 0;
   background-color: rgba(198, 40, 40, 0.08);
   color: #bc160a;
+  border-width: 0;
 }
 
 .dx-chat-file {

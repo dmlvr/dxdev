@@ -3773,10 +3773,10 @@
   color: rgb(255, 255, 255);
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-icon.dx-icon {
-  width: 20px;
-  height: 20px;
+  width: 1em;
+  height: 1em;
   font-size: 20px;
-  line-height: 20px;
+  line-height: 1em;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-error-tag {
   padding: 2px 6px;

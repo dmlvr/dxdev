@@ -5166,10 +5166,10 @@
   color: var(--dx-chat-tool-call-content);
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-icon.dx-icon {
-  width: var(--dx-chat-tool-call-icon-size);
-  height: var(--dx-chat-tool-call-icon-size);
+  width: 1em;
+  height: 1em;
   font-size: var(--dx-chat-tool-call-icon-size);
-  line-height: var(--dx-chat-tool-call-icon-size);
+  line-height: 1em;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-error-tag {
   padding: var(--dx-chat-tool-call-tag-padding);

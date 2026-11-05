@@ -3712,11 +3712,11 @@
   padding: 6px;
   font-size: 14px;
   line-height: 1.35715;
-  color: rgb(84.0392156863%, 85.4196078431%, 87.8352941176%);
+  color: rgb(85.4901960784%, 86.7450980392%, 88.9411764706%);
 }
 .dx-chat-tool-call-view .dx-accordion-item-title::before {
   font-size: 20px;
-  color: rgb(84.0392156863%, 85.4196078431%, 87.8352941176%);
+  color: rgb(85.4901960784%, 86.7450980392%, 88.9411764706%);
 }
 .dx-chat-tool-call-view .dx-accordion-item.dx-state-hover > .dx-accordion-item-title {
   color: #fff;
@@ -3725,10 +3725,10 @@
   color: #fff;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-icon.dx-icon {
-  width: 20px;
-  height: 20px;
+  width: 1em;
+  height: 1em;
   font-size: 20px;
-  line-height: 20px;
+  line-height: 1em;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-error-tag {
   padding: 2px 6px;

@@ -3734,7 +3734,7 @@
 }
 
 .dx-chat-messagebubble:has(> .dx-chat-tool-call-view) {
-  gap: 4px;
+  gap: 0.2857142857em;
 }
 
 .dx-chat-tool-call-view {
@@ -3748,16 +3748,16 @@
 .dx-chat-tool-call-view .dx-accordion-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 0.1428571429em;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-header {
-  padding: 6px;
+  padding: 0.4285714286em;
   font-weight: 600;
   line-height: 16px;
 }
 .dx-chat-tool-call-view .dx-accordion-item-title {
-  gap: 4px;
-  padding: 6px;
+  gap: 0.2857142857em;
+  padding: 0.4285714286em;
   font-size: 12px;
   line-height: 1.4286;
   color: rgb(66%, 66%, 66%);
@@ -3773,13 +3773,13 @@
   color: rgb(255, 255, 255);
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-icon.dx-icon {
-  width: 16px;
-  height: 16px;
+  width: 1em;
+  height: 1em;
   font-size: 16px;
-  line-height: 16px;
+  line-height: 1em;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-error-tag {
-  padding: 2px 6px;
+  padding: 0.1428571429em 0.4285714286em;
   border-radius: 4px;
   font-size: 12px;
   line-height: 1.3333;
@@ -3788,17 +3788,17 @@
   background-color: rgba(249, 47, 47, 0.1);
 }
 .dx-chat-tool-call-view .dx-accordion-item-body {
-  gap: 8px;
-  margin-inline-start: 15px;
-  padding-block: 2px 8px;
-  padding-inline: 14px 8px;
+  gap: 0.5714285714em;
+  margin-inline-start: 1.0714285714em;
+  padding-block: 0.1428571429em 0.5714285714em;
+  padding-inline: 1em 0.5714285714em;
   border-inline-start: 1px solid #414B5F;
 }
 .dx-chat-tool-call-view + .dx-chat-messagebubble-content {
-  padding: 4px 6px 8px;
+  padding: 0.2857142857em 0.4285714286em 0.5714285714em;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field-label {
-  padding-block-end: 2px;
+  padding-block-end: 0.1428571429em;
   color: rgb(255, 255, 255);
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined {
@@ -3811,7 +3811,7 @@
   background-color: transparent;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined .dx-texteditor-input {
-  padding: 6px 12px;
+  padding: 0.4285714286em 0.8571428571em;
   font-family: Consolas, "Courier New", monospace;
   font-size: 12px;
   line-height: 1.4286;

@@ -3725,10 +3725,10 @@
   color: #f5f6f7;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-icon.dx-icon {
-  width: 20px;
-  height: 20px;
+  width: 1em;
+  height: 1em;
   font-size: 20px;
-  line-height: 20px;
+  line-height: 1em;
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-error-tag {
   padding: 2px 6px;
@@ -3736,7 +3736,7 @@
   font-size: 12px;
   line-height: 1.3333;
   font-weight: normal;
-  color: rgb(87.3333333333%, 42.6666666667%, 41.3333333333%);
+  color: rgb(88.0784313725%, 46.0392156863%, 44.7843137255%);
   background-color: rgba(217, 83, 79, 0.1);
 }
 .dx-chat-tool-call-view .dx-accordion-item-body {
@@ -3772,7 +3772,7 @@
 }
 .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-hover, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-focused, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-active, .dx-chat-tool-call-view .dx-chat-tool-call-field .dx-texteditor.dx-editor-outlined.dx-chat-tool-call-error.dx-state-readonly {
   background-color: rgba(217, 83, 79, 0.1);
-  color: rgb(87.3333333333%, 42.6666666667%, 41.3333333333%);
+  color: rgb(88.0784313725%, 46.0392156863%, 44.7843137255%);
   border-width: 0;
 }
 

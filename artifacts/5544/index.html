@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Slider / RangeSlider invalid — fluent-next</title>
+<script>var THEME = new URLSearchParams(location.search).get("theme") === "light" ? "light" : "dark";
+document.write('<link rel="stylesheet" href="./css/dx.fluent-next.blue.' + THEME + '.css">');</script>
+<style>
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 24px; max-width: 1100px; background-color: var(--dxds-color-bg-canvas, #fff); color: var(--dxds-color-content, #000); }
+  .demo { display: grid; grid-template-columns: 240px 1fr 1fr; gap: 16px; align-items: center; padding: 10px 0; border-bottom: 1px solid #ddd; }
+  .demo.head { font-weight: 600; border-bottom: 2px solid #999; }
+  .host { padding: 14px 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 24px; }
+  th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; vertical-align: top; }
+  th { background: #f3f3f3; color: #222; }
+  .sw { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; border: 1px solid #888; margin-right: 4px; }
+
+  /* "Было": прежние токены */
+  .before .dx-slider {
+    --dx-slider-invalid-bg: var(--dxds-color-border-danger);
+    --dx-slider-handle-invalid-bg: var(--dxds-color-border-danger);
+    --dx-slider-invalid-bg-hovered: var(--dxds-color-border-danger);
+    --dx-slider-invalid-bg-focused: var(--dxds-color-content-danger);
+    --dx-slider-invalid-border-focused: var(--dxds-color-border-danger);
+  }
+  .theme-switcher { margin-bottom: 16px; background: #f3f3f3; padding: 8px; }
+</style>
+</head>
+<body>
+<div class="theme-switcher"><a href="?theme=dark">dark</a> | <a href="?theme=light">light</a></div>
+
+<div class="demo head"><div>Состояние</div><div>Было</div><div>Стало</div></div>
+<div class="demo"><div>Slider, invalid, default</div><div class="host before"><div id="o1"></div></div><div class="host"><div id="n1"></div></div></div>
+<div class="demo"><div>Slider, invalid, hover</div><div class="host before"><div id="o2"></div></div><div class="host"><div id="n2"></div></div></div>
+<div class="demo"><div>Slider, invalid, focused</div><div class="host before"><div id="o3"></div></div><div class="host"><div id="n3"></div></div></div>
+<div class="demo"><div>RangeSlider, invalid: start hover, end focused</div><div class="host before"><div id="o4"></div></div><div class="host"><div id="n4"></div></div></div>
+
+<table>
+  <thead>
+    <tr><th>Состояние</th><th>Элемент, свойство</th><th>CSS-переменная</th><th>Токен: было → стало</th><th>Light: было → стало</th><th>Dark: было → стало</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>default</td><td>.dx-slider-range-visible, background-color / border-color</td><td>--dx-slider-invalid-bg</td><td>color/border-danger → color/bg-danger</td><td><span class="sw" style="background:rgb(238,114,106)"></span>rgb(238, 114, 106) → <span class="sw" style="background:rgb(197,15,31)"></span>rgb(197, 15, 31)</td><td><span class="sw" style="background:rgb(228,85,79)"></span>rgb(228, 85, 79) → <span class="sw" style="background:rgb(178,0,23)"></span>rgb(178, 0, 23)</td></tr>
+    <tr><td>default</td><td>.dx-slider-handle::after, background-color</td><td>--dx-slider-handle-invalid-bg</td><td>color/border-danger → color/bg-danger</td><td><span class="sw" style="background:rgb(238,114,106)"></span>rgb(238, 114, 106) → <span class="sw" style="background:rgb(197,15,31)"></span>rgb(197, 15, 31)</td><td><span class="sw" style="background:rgb(228,85,79)"></span>rgb(228, 85, 79) → <span class="sw" style="background:rgb(178,0,23)"></span>rgb(178, 0, 23)</td></tr>
+    <tr><td>hover</td><td>.dx-slider-handle.dx-state-hover::after, background-color</td><td>--dx-slider-invalid-bg-hovered</td><td>color/border-danger → color/bg-danger-hovered</td><td><span class="sw" style="background:rgb(238,114,106)"></span>rgb(238, 114, 106) → <span class="sw" style="background:rgb(157,0,19)"></span>rgb(157, 0, 19)</td><td><span class="sw" style="background:rgb(228,85,79)"></span>rgb(228, 85, 79) → <span class="sw" style="background:rgb(197,15,31)"></span>rgb(197, 15, 31)</td></tr>
+    <tr><td>focused</td><td>.dx-slider-handle.dx-state-focused, border-color</td><td>--dx-slider-invalid-border-focused</td><td>color/border-danger → color/border-danger-shared-active</td><td><span class="sw" style="background:rgb(238,114,106)"></span>rgb(238, 114, 106) → <span class="sw" style="background:rgb(118,0,11)"></span>rgb(118, 0, 11)</td><td><span class="sw" style="background:rgb(228,85,79)"></span>rgb(228, 85, 79) → <span class="sw" style="background:rgb(228,85,79)"></span>rgb(228, 85, 79)<br>(без изменений)</td></tr>
+    <tr><td>focused</td><td>.dx-slider-handle.dx-state-focused::after, background-color</td><td>--dx-slider-invalid-bg-focused</td><td>color/content-danger → color/bg-danger-shared-active</td><td><span class="sw" style="background:rgb(197,15,31)"></span>rgb(197, 15, 31) → <span class="sw" style="background:rgb(118,0,11)"></span>rgb(118, 0, 11)</td><td><span class="sw" style="background:rgb(238,114,106)"></span>rgb(238, 114, 106) → <span class="sw" style="background:rgb(228,85,79)"></span>rgb(228, 85, 79)</td></tr>
+  </tbody>
+</table>
+
+<script src="./js/jquery.min.js"></script>
+<script src="./js/dx.all.debug.js"></script>
+<script>
+for (const p of ['o', 'n']) {
+  $('#' + p + '1').dxSlider({ value: 40, isValid: false });
+  $('#' + p + '2').dxSlider({ value: 40, isValid: false });
+  $('#' + p + '3').dxSlider({ value: 40, isValid: false });
+  $('#' + p + '4').dxRangeSlider({ start: 20, end: 80, isValid: false });
+
+  $('#' + p + '2 .dx-slider-handle').addClass('dx-state-hover');
+  $('#' + p + '3 .dx-slider-handle').addClass('dx-state-focused');
+  $('#' + p + '4 .dx-rangeslider-start-handle').addClass('dx-state-hover');
+  $('#' + p + '4 .dx-rangeslider-end-handle').addClass('dx-state-focused');
+}
+</script>
+</body>
+</html>

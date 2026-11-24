@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>FileManager: иконка file-actions-button в focused-строке</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  var THEME = new URLSearchParams(location.search).get('theme') === 'light' ? 'light' : 'dark';
+  document.write('<link rel="stylesheet" href="css/dx.fluent-next.blue.' + THEME + '.css">');
+</script>
+<style>
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 24px; max-width: 1200px;
+         background-color: var(--dxds-color-bg-canvas, #fff); color: var(--dxds-color-content, #000); }
+  h2 { margin: 0 0 4px; }
+  h3 { margin: 24px 0 8px; }
+  .note { opacity: .75; margin: 0 0 16px; }
+  .themes a { margin-right: 12px; color: inherit; }
+  .themes a.active { font-weight: 600; text-decoration: none; }
+  .host { margin-bottom: 8px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 24px; }
+  th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; vertical-align: top; }
+  th { background: #f3f3f3; color: #222; }
+  .sw { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; border: 1px solid #888; margin-right: 4px; }
+  .ok { color: #0a7a0a; font-weight: 600; }
+
+  /* «Было»: прежний токен иконки (color/content-inverted) подставлен вместо нового */
+  .before .dx-filemanager {
+    --dx-file-manager-item-content-focused: var(--dxds-color-content-inverted);
+  }
+</style>
+</head>
+<body>
+
+<h2>FileManager, режим Details: иконка кнопки действий в focused-строке</h2>
+<p class="note">Настоящий dxFileManager. Строка <code>report.txt</code> в фокусе. «Было» — иконка красится
+  <code>color/content-inverted</code>, «Стало» — <code>color/content</code>.</p>
+<p class="themes">Тема:
+  <a href="?theme=light" id="lnk-light">light</a>
+  <a href="?theme=dark" id="lnk-dark">dark</a>
+</p>
+
+<h3>Было</h3>
+<div class="host before"><div id="fm-old"></div></div>
+
+<h3>Стало</h3>
+<div class="host"><div id="fm-new"></div></div>
+
+<table>
+  <thead>
+    <tr><th>Элемент</th><th>CSS-переменная</th><th>Токен: было → стало</th><th>Цвет иконки сейчас (из браузера)</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>иконка <code>.dx-filemanager-file-actions-button .dx-icon</code> в <code>.dx-row-focused</code></td>
+      <td>--dx-file-manager-item-content-focused</td>
+      <td>color/content-inverted → color/content</td>
+      <td id="measured">…</td>
+    </tr>
+    <tr>
+      <td>текст focused-строки (для сравнения)</td>
+      <td>--dx-grid-row-content-focused</td>
+      <td>color/content</td>
+      <td id="measured-text">…</td>
+    </tr>
+  </tbody>
+</table>
+
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  document.getElementById('lnk-' + THEME).className = 'active';
+
+  var files = [
+    { name: 'Documents', isDirectory: true, dateModified: '2024-01-15T10:00:00Z' },
+    { name: 'report.txt', isDirectory: false, size: 2048, dateModified: '2024-01-16T10:00:00Z' },
+    { name: 'photo.png', isDirectory: false, size: 10240, dateModified: '2024-01-17T10:00:00Z' }
+  ];
+
+  // Details-таблица создаётся асинхронно, после загрузки файловой системы
+  function whenGrid(id, done) {
+    var timer = setInterval(function () {
+      var el = document.querySelector('#' + id + ' .dx-filemanager-details .dx-datagrid');
+      var grid = null;
+      while (el && !grid && el.id !== id) {
+        grid = DevExpress.ui.dxDataGrid.getInstance(el);
+        el = el.parentElement;
+      }
+      if (grid && grid.getVisibleRows().length) {
+        clearInterval(timer);
+        done(grid);
+      }
+    }, 50);
+  }
+
+  function create(id, done) {
+    $('#' + id).dxFileManager({ fileSystemProvider: files, height: 400 });
+    // фокус на строку report.txt: тот же сценарий, что и в Playwright-тесте
+    whenGrid(id, function (grid) {
+      grid.option('focusedRowIndex', 1);
+      done();
+    });
+  }
+
+  function rgb(el) { return getComputedStyle(el).color; }
+  function swatch(c) {
+    return '<span class="sw" style="background:' + c + '"></span>' + c;
+  }
+
+  function measure() {
+    var parts = [];
+    ['fm-old', 'fm-new'].forEach(function (id) {
+      var icon = document.querySelector('#' + id + ' .dx-row-focused .dx-filemanager-file-actions-button .dx-icon');
+      var name = document.querySelector('#' + id + ' .dx-row-focused .dx-filemanager-details-item-name');
+      parts.push({ id: id, icon: icon && rgb(icon), text: name && rgb(name) });
+    });
+    document.getElementById('measured').innerHTML =
+      'было: ' + (parts[0].icon ? swatch(parts[0].icon) : 'иконка не найдена') + '<br>' +
+      'стало: ' + (parts[1].icon ? swatch(parts[1].icon) : 'иконка не найдена');
+    document.getElementById('measured-text').innerHTML =
+      parts[1].text ? swatch(parts[1].text) : '—';
+  }
+
+  var pending = 2;
+  function ready() { if (--pending === 0) { setTimeout(measure, 300); } }
+  create('fm-old', ready);
+  create('fm-new', ready);
+</script>
+</body>
+</html>

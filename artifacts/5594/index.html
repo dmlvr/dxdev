@@ -5,39 +5,75 @@
 <title>FileManager: иконка file-actions-button в focused-строке</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>
-  var THEME = new URLSearchParams(location.search).get('theme') === 'light' ? 'light' : 'dark';
-  document.write('<link rel="stylesheet" href="css/dx.fluent-next.blue.' + THEME + '.css">');
+  // Темы: [файл, подпись, тёмная ли, прежний цвет иконки (до правки) или null, если цвет не менялся]
+  var THEMES = {
+    'Generic': [
+      ['light', 'light', false, '#fff'], ['dark', 'dark', true, '#2a2a2a'],
+      ['carmine', 'carmine', false, null], ['softblue', 'softblue', false, null],
+      ['greenmist', 'greenmist', false, null], ['contrast', 'contrast', false, null],
+      ['darkmoon', 'darkmoon', true, null], ['darkviolet', 'darkviolet', true, null]
+    ],
+    'Material': [
+      ['material.blue.light', 'blue light', false, '#fff'], ['material.blue.dark', 'blue dark', true, 'rgba(0, 0, 0, 0.87)'],
+      ['material.lime.light', 'lime light', false, '#fff'], ['material.lime.dark', 'lime dark', true, 'rgba(0, 0, 0, 0.87)'],
+      ['material.orange.light', 'orange light', false, '#fff'], ['material.orange.dark', 'orange dark', true, 'rgba(0, 0, 0, 0.87)'],
+      ['material.purple.light', 'purple light', false, '#fff'], ['material.purple.dark', 'purple dark', true, 'rgba(0, 0, 0, 0.87)'],
+      ['material.teal.light', 'teal light', false, '#fff'], ['material.teal.dark', 'teal dark', true, 'rgba(0, 0, 0, 0.87)']
+    ],
+    'Fluent': [
+      ['fluent.blue.light', 'blue light', false, '#fff'], ['fluent.blue.dark', 'blue dark', true, '#000'],
+      ['fluent.saas.light', 'saas light', false, '#fff'], ['fluent.saas.dark', 'saas dark', true, '#000']
+    ],
+    'Fluent Next': [
+      ['fluent-next.blue.light', 'blue light', false, 'var(--dxds-color-content-inverted)'],
+      ['fluent-next.blue.dark', 'blue dark', true, 'var(--dxds-color-content-inverted)']
+    ]
+  };
+
+  var THEME = new URLSearchParams(location.search).get('theme') || 'fluent-next.blue.light';
+  var ENTRY = null;
+  Object.keys(THEMES).forEach(function (g) {
+    THEMES[g].forEach(function (t) { if (t[0] === THEME) { ENTRY = t; } });
+  });
+  if (!ENTRY) { ENTRY = THEMES['Fluent Next'][0]; THEME = ENTRY[0]; }
+
+  document.write('<link rel="stylesheet" href="css/dx.' + THEME + '.css">');
+  // «Было»: прежний цвет иконки; в темах, где он не менялся, «Было» и «Стало» совпадают
+  if (ENTRY[3]) {
+    document.write('<style>.before .dx-row-focused .dx-filemanager-file-actions-button .dx-button .dx-icon { color: ' + ENTRY[3] + ' !important; }</style>');
+  }
 </script>
 <style>
-  body { font: 14px/1.4 system-ui, sans-serif; margin: 24px; max-width: 1200px;
-         background-color: var(--dxds-color-bg-canvas, #fff); color: var(--dxds-color-content, #000); }
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 24px; max-width: 1200px; }
+  body.page-light { background: #fff; color: #222; }
+  body.page-dark { background: #1e1e1e; color: #eee; }
   h2 { margin: 0 0 4px; }
   h3 { margin: 24px 0 8px; }
   .note { opacity: .75; margin: 0 0 16px; }
-  .themes a { margin-right: 12px; color: inherit; }
-  .themes a.active { font-weight: 600; text-decoration: none; }
+  .picker { margin: 12px 0 8px; }
+  .picker label { font-weight: 600; margin-right: 8px; }
+  .picker select { font: inherit; padding: 4px 8px; }
   .host { margin-bottom: 8px; }
-  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 24px; }
-  th, td { border: 1px solid #ccc; padding: 4px 8px; text-align: left; vertical-align: top; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 16px; }
+  th, td { border: 1px solid #aaa; padding: 4px 8px; text-align: left; vertical-align: top; }
   th { background: #f3f3f3; color: #222; }
   .sw { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; border: 1px solid #888; margin-right: 4px; }
   .ok { color: #0a7a0a; font-weight: 600; }
-
-  /* «Было»: прежний токен иконки (color/content-inverted) подставлен вместо нового */
-  .before .dx-filemanager {
-    --dx-file-manager-item-content-focused: var(--dxds-color-content-inverted);
-  }
+  .bad { color: #c50f1f; font-weight: 600; }
+  body.page-dark .ok { color: #5fd35f; }
+  body.page-dark .bad { color: #ff8a8a; }
 </style>
 </head>
-<body>
+<body class="page-light">
 
 <h2>FileManager, режим Details: иконка кнопки действий в focused-строке</h2>
-<p class="note">Настоящий dxFileManager. Строка <code>report.txt</code> в фокусе. «Было» — иконка красится
-  <code>color/content-inverted</code>, «Стало» — <code>color/content</code>.</p>
-<p class="themes">Тема:
-  <a href="?theme=light" id="lnk-light">light</a>
-  <a href="?theme=dark" id="lnk-dark">dark</a>
-</p>
+<p class="note">Настоящий dxFileManager. Строка <code>report.txt</code> в фокусе. Иконка должна читаться
+  и совпадать по цвету с текстом строки. «Было» — прежний цвет иконки, «Стало» — актуальная сборка темы.</p>
+
+<div class="picker">
+  <label for="theme">Тема</label>
+  <select id="theme"></select>
+</div>
 
 <h3>Было</h3>
 <div class="host before"><div id="fm-old"></div></div>
@@ -47,28 +83,41 @@
 
 <table>
   <thead>
-    <tr><th>Элемент</th><th>CSS-переменная</th><th>Токен: было → стало</th><th>Цвет иконки сейчас (из браузера)</th></tr>
+    <tr><th></th><th>Было</th><th>Стало</th></tr>
   </thead>
   <tbody>
-    <tr>
-      <td>иконка <code>.dx-filemanager-file-actions-button .dx-icon</code> в <code>.dx-row-focused</code></td>
-      <td>--dx-file-manager-item-content-focused</td>
-      <td>color/content-inverted → color/content</td>
-      <td id="measured">…</td>
-    </tr>
-    <tr>
-      <td>текст focused-строки (для сравнения)</td>
-      <td>--dx-grid-row-content-focused</td>
-      <td>color/content</td>
-      <td id="measured-text">…</td>
-    </tr>
+    <tr><td>фон focused-строки</td><td id="bg-old">…</td><td id="bg-new">…</td></tr>
+    <tr><td>цвет текста строки</td><td id="text-old">…</td><td id="text-new">…</td></tr>
+    <tr><td>цвет иконки</td><td id="icon-old">…</td><td id="icon-new">…</td></tr>
+    <tr><td>контраст иконки с фоном</td><td id="ratio-old">…</td><td id="ratio-new">…</td></tr>
+    <tr><td>иконка совпадает с текстом строки</td><td id="same-old">…</td><td id="same-new">…</td></tr>
   </tbody>
 </table>
+<p class="note" id="changed-note"></p>
 
 <script src="lib/jquery.js"></script>
 <script src="lib/dx.all.js"></script>
 <script>
-  document.getElementById('lnk-' + THEME).className = 'active';
+  // селектор тем
+  var select = document.getElementById('theme');
+  Object.keys(THEMES).forEach(function (g) {
+    var og = document.createElement('optgroup'); og.label = g;
+    THEMES[g].forEach(function (t) {
+      var o = document.createElement('option');
+      o.value = t[0]; o.textContent = g + ' ' + t[1] + (t[3] ? '' : ' (цвет не менялся)');
+      if (t[0] === THEME) { o.selected = true; }
+      og.appendChild(o);
+    });
+    select.appendChild(og);
+  });
+  select.addEventListener('change', function () {
+    location.search = '?theme=' + encodeURIComponent(select.value);
+  });
+
+  document.body.className = ENTRY[2] ? 'page-dark' : 'page-light';
+  document.getElementById('changed-note').textContent = ENTRY[3]
+    ? 'В этой теме цвет иконки изменён.'
+    : 'В этой теме иконка уже совпадала с текстом строки, цвет не менялся: «Было» и «Стало» одинаковы.';
 
   var files = [
     { name: 'Documents', isDirectory: true, dateModified: '2024-01-15T10:00:00Z' },
@@ -101,23 +150,40 @@
     });
   }
 
-  function rgb(el) { return getComputedStyle(el).color; }
-  function swatch(c) {
-    return '<span class="sw" style="background:' + c + '"></span>' + c;
+  function parse(c) { return c.match(/[\d.]+/g).map(Number); }
+  function lum(c) {
+    var r = parse(c).slice(0, 3).map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 0.2126 * r[0] + 0.7152 * r[1] + 0.0722 * r[2];
+  }
+  function ratio(a, b) {
+    var x = lum(a), y = lum(b), h = Math.max(x, y), l = Math.min(x, y);
+    return (h + 0.05) / (l + 0.05);
+  }
+  function swatch(c) { return '<span class="sw" style="background:' + c + '"></span>' + c; }
+
+  function read(id) {
+    var row = document.querySelector('#' + id + ' .dx-row-focused');
+    var name = row && row.querySelector('.dx-filemanager-details-item-name');
+    var icon = row && row.querySelector('.dx-filemanager-file-actions-button .dx-icon');
+    var bg = null;
+    for (var n = name; n && !bg; n = n.parentElement) {
+      var c = getComputedStyle(n).backgroundColor;
+      if (c && c !== 'rgba(0, 0, 0, 0)' && c !== 'transparent') { bg = c; }
+    }
+    return { bg: bg, text: getComputedStyle(name).color, icon: getComputedStyle(icon).color };
   }
 
   function measure() {
-    var parts = [];
-    ['fm-old', 'fm-new'].forEach(function (id) {
-      var icon = document.querySelector('#' + id + ' .dx-row-focused .dx-filemanager-file-actions-button .dx-icon');
-      var name = document.querySelector('#' + id + ' .dx-row-focused .dx-filemanager-details-item-name');
-      parts.push({ id: id, icon: icon && rgb(icon), text: name && rgb(name) });
+    ['old', 'new'].forEach(function (k) {
+      var m = read('fm-' + k);
+      var r = ratio(m.icon, m.bg);
+      document.getElementById('bg-' + k).innerHTML = swatch(m.bg);
+      document.getElementById('text-' + k).innerHTML = swatch(m.text);
+      document.getElementById('icon-' + k).innerHTML = swatch(m.icon);
+      document.getElementById('ratio-' + k).innerHTML = '<span class="' + (r >= 3 ? 'ok' : 'bad') + '">' + r.toFixed(2) + '</span>';
+      document.getElementById('same-' + k).innerHTML = m.icon === m.text
+        ? '<span class="ok">да</span>' : '<span class="bad">нет</span>';
     });
-    document.getElementById('measured').innerHTML =
-      'было: ' + (parts[0].icon ? swatch(parts[0].icon) : 'иконка не найдена') + '<br>' +
-      'стало: ' + (parts[1].icon ? swatch(parts[1].icon) : 'иконка не найдена');
-    document.getElementById('measured-text').innerHTML =
-      parts[1].text ? swatch(parts[1].text) : '—';
   }
 
   var pending = 2;

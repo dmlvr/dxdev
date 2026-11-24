@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>RangeSelector: текст на флажках слайдеров</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  // [файл, подпись, тёмная ли, менялась ли тема]; менялась только fluent-next
+  var THEMES = {
+    'Fluent Next': [['fluent-next.blue.dark', 'blue dark', true, true], ['fluent-next.blue.light', 'blue light', false, true]],
+    'Fluent': [['fluent.blue.light', 'blue light', false, false], ['fluent.blue.dark', 'blue dark', true, false],
+      ['fluent.saas.light', 'saas light', false, false], ['fluent.saas.dark', 'saas dark', true, false]],
+    'Material': [['material.blue.light', 'blue light', false, false], ['material.blue.dark', 'blue dark', true, false],
+      ['material.lime.light', 'lime light', false, false], ['material.lime.dark', 'lime dark', true, false],
+      ['material.orange.light', 'orange light', false, false], ['material.orange.dark', 'orange dark', true, false],
+      ['material.purple.light', 'purple light', false, false], ['material.purple.dark', 'purple dark', true, false],
+      ['material.teal.light', 'teal light', false, false], ['material.teal.dark', 'teal dark', true, false]],
+    'Generic': [['light', 'light', false, false], ['dark', 'dark', true, false], ['carmine', 'carmine', false, false],
+      ['softblue', 'softblue', false, false], ['greenmist', 'greenmist', false, false], ['contrast', 'contrast', false, false],
+      ['darkmoon', 'darkmoon', true, false], ['darkviolet', 'darkviolet', true, false]]
+  };
+  var THEME = new URLSearchParams(location.search).get('theme') || 'fluent-next.blue.dark';
+  var ENTRY = null;
+  Object.keys(THEMES).forEach(function (g) {
+    THEMES[g].forEach(function (t) { if (t[0] === THEME) { ENTRY = t; } });
+  });
+  if (!ENTRY) { ENTRY = THEMES['Fluent Next'][0]; THEME = ENTRY[0]; }
+  document.write('<link rel="stylesheet" href="css/dx.' + THEME + '.css">');
+</script>
+<style>
+  body { font: 14px/1.4 system-ui, sans-serif; margin: 24px; max-width: 1100px; }
+  body.page-light { background: #fff; color: #222; }
+  body.page-dark { background: #242424; color: #eee; }
+  h2 { margin: 0 0 4px; }
+  h3 { margin: 24px 0 8px; }
+  .note { opacity: .75; margin: 0 0 16px; }
+  .picker { margin: 12px 0 8px; }
+  .picker label { font-weight: 600; margin-right: 8px; }
+  .picker select { font: inherit; padding: 4px 8px; }
+  .grid { display: grid; grid-template-columns: 140px 1fr 1fr; gap: 12px 16px; align-items: center; }
+  .grid .head { font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 16px; }
+  th, td { border: 1px solid #aaa; padding: 4px 8px; text-align: left; vertical-align: top; }
+  th { background: #f3f3f3; color: #222; }
+  .sw { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; border: 1px solid #888; margin-right: 4px; }
+  .ok { color: #0a7a0a; font-weight: 600; }
+  .bad { color: #c50f1f; font-weight: 600; }
+  body.page-dark .ok { color: #5fd35f; }
+  body.page-dark .bad { color: #ff8a8a; }
+</style>
+</head>
+<body class="page-light">
+
+<h2>RangeSelector: текст на флажках слайдеров</h2>
+<p class="note">Настоящий dxRangeSelector. «Было» — текст флажка красится <code>--dx-viz-bg</code>,
+  «Стало» — <code>--dx-viz-content-on-color</code> (белый в обеих темах). В нижнем ряду флажки с красной заливкой
+  <code>--dx-viz-danger</code>, как у недопустимого диапазона (в самом виджете такая заливка появляется, пока диапазон меньше <code>minRange</code>).</p>
+
+<div class="picker">
+  <label for="theme">Тема</label>
+  <select id="theme"></select>
+</div>
+
+<div class="grid">
+  <div></div><div class="head">Было</div><div class="head">Стало</div>
+  <div>Допустимый диапазон</div>
+  <div><div id="rs-old-ok"></div></div>
+  <div><div id="rs-new-ok"></div></div>
+  <div class="bad-row">Красная заливка (недопустимый диапазон)</div>
+  <div class="bad-row"><div id="rs-old-bad"></div></div>
+  <div class="bad-row"><div id="rs-new-bad"></div></div>
+</div>
+
+<p class="note" id="changed-note"></p>
+
+<table>
+  <thead>
+    <tr><th>Флажок</th><th>Цвет текста: было → стало</th><th>Заливка флажка</th><th>Контраст текста с заливкой: было → стало</th></tr>
+  </thead>
+  <tbody id="rows"></tbody>
+</table>
+
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var sel = document.getElementById('theme');
+  Object.keys(THEMES).forEach(function (g) {
+    var og = document.createElement('optgroup'); og.label = g;
+    THEMES[g].forEach(function (t) {
+      var o = document.createElement('option');
+      o.value = t[0]; o.textContent = g + ' ' + t[1] + (t[0] === 'fluent-next.blue.dark' ? '' : ' (значения не менялись)'); o.selected = t[0] === THEME;
+      og.appendChild(o);
+    });
+    sel.appendChild(og);
+  });
+  sel.addEventListener('change', function () { location.search = '?theme=' + encodeURIComponent(sel.value); });
+  document.body.className = ENTRY[2] ? 'page-dark' : 'page-light';
+
+  // «Было»: текст флажка берёт --dx-viz-bg, как в прежней теме
+  var CHANGED = ENTRY[3];
+  var OLD = CHANGED ? { sliderMarker: { font: { color: 'var(--dx-viz-bg, #ffffff)' } } } : {};
+
+  function make(id, extra) {
+    var $el = $('#' + id).dxRangeSelector($.extend(true, {
+      scale: { startValue: 0, endValue: 100, tickInterval: 25, minRange: 30 },
+      value: [20, 70],
+      size: { width: 420, height: 110 },
+      behavior: { animationEnabled: false }
+    }, extra));
+    return $el;
+  }
+
+  // Красная заливка флажка, как у недопустимого диапазона: тема берёт для него --dx-viz-danger
+  var DANGER = { sliderMarker: { color: 'var(--dx-viz-danger, #c50f1f)' } };
+
+  make('rs-old-ok', OLD);
+  make('rs-new-ok', {});
+  if (CHANGED) {
+    make('rs-old-bad', $.extend(true, {}, OLD, DANGER));
+    make('rs-new-bad', DANGER);
+  } else {
+    // в других темах заливку недопустимого диапазона задаёт сама тема, красный ряд не показываем
+    document.querySelectorAll('.bad-row').forEach(function (e) { e.style.display = 'none'; });
+  }
+
+
+  function parse(c) { return c.match(/[\d.]+/g).map(Number); }
+  function lum(c) {
+    var r = parse(c).slice(0, 3).map(function (v) { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+    return 0.2126 * r[0] + 0.7152 * r[1] + 0.0722 * r[2];
+  }
+  function ratio(a, b) {
+    var x = lum(a), y = lum(b), h = Math.max(x, y), l = Math.min(x, y);
+    return (h + 0.05) / (l + 0.05);
+  }
+  function swatch(c) { return '<span class="sw" style="background:' + c + '"></span>' + c; }
+  function css(el, prop) { return getComputedStyle(el)[prop]; }
+
+  // флажки в разметке: <g class="slider-marker"> с заливкой (<path>/<rect>) и <text>
+  function markers(id) {
+    var res = [];
+    document.querySelectorAll('#' + id + ' .slider-marker').forEach(function (g) {
+      var text = g.querySelector('text');
+      var shape = g.querySelector('path, rect:not(.slider-marker-tracker)');
+      if (text && shape && text.textContent) {
+        res.push({ label: text.textContent, text: css(text, 'fill'), fill: css(shape, 'fill') });
+      }
+    });
+    return res;
+  }
+
+  function report() {
+    var rows = '';
+    [['ok', 'допустимый'], ['bad', 'красная заливка']].forEach(function (s) {
+      var olds = markers('rs-old-' + s[0]), news = markers('rs-new-' + s[0]);
+      if (s[0] === 'bad' && !CHANGED) { return; }
+      news.forEach(function (n, i) {
+        var o = olds[i];
+        var ro = ratio(o.text, o.fill), rn = ratio(n.text, n.fill);
+        rows += '<tr><td>' + s[1] + ', «' + n.label + '»</td><td>' + swatch(o.text) + ' → ' + swatch(n.text) + '</td><td>' + swatch(n.fill) + '</td>'
+          + '<td><span class="' + (ro >= 4.5 ? 'ok' : 'bad') + '">' + ro.toFixed(2) + '</span> → <span class="' + (rn >= 4.5 ? 'ok' : 'bad') + '">' + rn.toFixed(2) + '</span></td></tr>';
+      });
+    });
+    document.getElementById('rows').innerHTML = rows || '<tr><td colspan="4">флажки не найдены</td></tr>';
+
+    var changed = false;
+    ['ok', 'bad'].forEach(function (k) {
+      var o = markers('rs-old-' + k), n = markers('rs-new-' + k);
+      n.forEach(function (m, i) { if (o[i] && o[i].text !== m.text) { changed = true; } });
+    });
+    document.getElementById('changed-note').textContent = changed
+      ? 'В этой теме цвет текста на флажках изменился.'
+      : CHANGED
+        ? 'В этой теме значения не изменились: и --dx-viz-bg, и --dx-viz-content-on-color дают тот же цвет текста.'
+        : 'Эта тема не менялась: «Было» и «Стало» одинаковы (текст флажка задаёт сама тема).';
+  }
+
+  setTimeout(report, 600);
+</script>
+</body>
+</html>

@@ -116873,37 +116873,33 @@ Object.defineProperty(exports, "__esModule", ({
 }));
 exports["default"] = void 0;
 exports.sort = sort;
-var _iterator = __webpack_require__(21274);
 var _type = __webpack_require__(11528);
 var _widget_utils = __webpack_require__(15346);
-function sort(loadOptions, dataSource, getAscOrder) {
-  sortDimension(dataSource, loadOptions, 'rows', getAscOrder);
-  sortDimension(dataSource, loadOptions, 'columns', getAscOrder);
+function getMemberForSortBy(sortBy, getAscOrder) {
+  if (sortBy === 'none') {
+    return 'index';
+  }
+  if (getAscOrder || sortBy !== 'displayText') {
+    return 'value';
+  }
+  return 'text';
 }
-function sortDimension(dataSource, loadOptions, dimensionName, getAscOrder) {
-  const fields = loadOptions[dimensionName] || [];
-  const baseIndex = loadOptions.headerName === dimensionName ? loadOptions.path.length : 0;
-  const sortingMethodByLevel = [];
-  (0, _widget_utils.foreachDataLevel)(dataSource[dimensionName], (item, index) => {
-    const field = fields[index] || {};
-    const sortingMethod = sortingMethodByLevel[index] = sortingMethodByLevel[index] || getSortingMethod(field, dataSource, loadOptions, dimensionName, getAscOrder);
-    item.sort(sortingMethod);
-  }, baseIndex);
-}
-function getSortingMethod(field, dataSource, loadOptions, dimensionName, getAscOrder) {
-  const sortOrder = getAscOrder ? 'asc' : field.sortOrder;
-  const sortBy = getMemberForSortBy(field.sortBy, getAscOrder);
-  const defaultCompare = field.sortingMethod ? function (a, b) {
-    return field.sortingMethod(a, b);
-  } : (0, _widget_utils.getCompareFunction)(item => item[sortBy]);
-  const summaryValueSelector = !getAscOrder && getFieldSummaryValueSelector(field, dataSource, loadOptions, dimensionName);
-  const summaryCompare = summaryValueSelector && (0, _widget_utils.getCompareFunction)(summaryValueSelector);
-  const sortingMethod = function (a, b) {
-    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-    const result = summaryCompare && summaryCompare(a, b) || defaultCompare(a, b);
-    return sortOrder === 'desc' ? -result : result;
-  };
-  return sortingMethod;
+function getSliceIndex(items, path) {
+  let index = null;
+  const pathValue = (path || []).join('.');
+  if (pathValue.length) {
+    (0, _widget_utils.foreachTree)(items, members => {
+      const item = members[0];
+      const itemPath = (0, _widget_utils.createPath)(members).join('.');
+      const textPath = members.map(member => member.text).reverse().join('.');
+      if (pathValue === itemPath || item.key && textPath === pathValue) {
+        index = members[0].index;
+        return false;
+      }
+      return undefined;
+    });
+  }
+  return index;
 }
 function getFieldSummaryValueSelector(field, dataSource, loadOptions, dimensionName) {
   const {
@@ -116913,43 +116909,57 @@ function getFieldSummaryValueSelector(field, dataSource, loadOptions, dimensionN
   const areRows = dimensionName === 'rows';
   const sortByDimension = areRows ? dataSource.columns : dataSource.rows;
   const grandTotalIndex = areRows ? dataSource.grandTotalRowIndex : dataSource.grandTotalColumnIndex;
-  const sortBySummaryPath = field.sortBySummaryPath || [];
+  const sortBySummaryPath = field.sortBySummaryPath ?? [];
   const sliceIndex = sortBySummaryPath.length ? getSliceIndex(sortByDimension, sortBySummaryPath) : grandTotalIndex;
   if (values !== null && values !== void 0 && values.length && sortBySummaryFieldIndex >= 0 && (0, _type.isDefined)(sliceIndex)) {
-    return function (field) {
-      const rowIndex = areRows ? field.index : sliceIndex;
-      const columnIndex = areRows ? sliceIndex : field.index;
-      const value = ((values[rowIndex] || [[]])[columnIndex] || [])[sortBySummaryFieldIndex];
+    return function getSummaryValue(headerItem) {
+      const rowIndex = areRows ? headerItem.index : sliceIndex;
+      const columnIndex = areRows ? sliceIndex : headerItem.index;
+      const rowValues = (0, _type.isDefined)(rowIndex) && values[rowIndex] || [[]];
+      const cellValues = (0, _type.isDefined)(columnIndex) && rowValues[columnIndex] || [];
+      const value = cellValues[sortBySummaryFieldIndex];
       return (0, _type.isDefined)(value) ? value : null;
     };
   }
   return undefined;
 }
-function getMemberForSortBy(sortBy, getAscOrder) {
-  let member = 'text';
-  if (sortBy === 'none') {
-    member = 'index';
-  } else if (getAscOrder || sortBy !== 'displayText') {
-    member = 'value';
-  }
-  return member;
+function hasSortingMethod(field) {
+  return !!field.sortingMethod;
 }
-function getSliceIndex(items, path) {
-  let index = null;
-  const pathValue = (path || []).join('.');
-  if (pathValue.length) {
-    (0, _widget_utils.foreachTree)(items, items => {
-      const item = items[0];
-      const itemPath = (0, _widget_utils.createPath)(items).join('.');
-      const textPath = (0, _iterator.map)(items, item => item.text).reverse().join('.');
-      if (pathValue === itemPath || item.key && textPath === pathValue) {
-        index = items[0].index;
-        return false;
-      }
-      return undefined;
-    });
+function getSortingMethod(field, dataSource, loadOptions, dimensionName, getAscOrder) {
+  const sortOrder = getAscOrder ? 'asc' : field.sortOrder;
+  const sortBy = getMemberForSortBy(field.sortBy, getAscOrder);
+  const defaultCompare = hasSortingMethod(field) ? function customCompare(a, b) {
+    // @ts-expect-error sortingMethod is typed for string and number values
+    return field.sortingMethod(a, b);
+  } : (0, _widget_utils.getCompareFunction)(item => item[sortBy]);
+  const summaryValueSelector = !getAscOrder && getFieldSummaryValueSelector(field, dataSource, loadOptions, dimensionName);
+  const summaryCompare = summaryValueSelector && (0, _widget_utils.getCompareFunction)(summaryValueSelector);
+  const sortingMethod = function sortingMethod(a, b) {
+    const summaryResult = summaryCompare ? summaryCompare(a, b) : 0;
+    const result = summaryResult || defaultCompare(a, b);
+    return sortOrder === 'desc' ? -result : result;
+  };
+  return sortingMethod;
+}
+function sortDimension(dataSource, loadOptions, dimensionName, getAscOrder) {
+  var _loadOptions$path;
+  const fields = loadOptions[dimensionName] || [];
+  const baseIndex = loadOptions.headerName === dimensionName ? ((_loadOptions$path = loadOptions.path) === null || _loadOptions$path === void 0 ? void 0 : _loadOptions$path.length) ?? 0 : 0;
+  const sortingMethodByLevel = [];
+  (0, _widget_utils.foreachDataLevel)(dataSource[dimensionName], (item, index) => {
+    const field = fields[index] || {};
+    sortingMethodByLevel[index] ?? (sortingMethodByLevel[index] = getSortingMethod(field, dataSource, loadOptions, dimensionName, getAscOrder));
+    const sortingMethod = sortingMethodByLevel[index];
+    item.sort(sortingMethod);
+  }, baseIndex);
+}
+function sort(loadOptions, dataSource, getAscOrder) {
+  if (!loadOptions) {
+    return;
   }
-  return index;
+  sortDimension(dataSource, loadOptions, 'rows', getAscOrder);
+  sortDimension(dataSource, loadOptions, 'columns', getAscOrder);
 }
 var _default = exports["default"] = {
   sort
@@ -287060,6 +287070,7 @@ const VIZ_BORDER = '--dx-viz-border';
 const VIZ_BORDER_ACTIVE = '--dx-viz-border-active';
 const VIZ_BORDER_HOVERED = '--dx-viz-border-hovered';
 const VIZ_CONTENT = '--dx-viz-content';
+const VIZ_CONTENT_ON_COLOR = '--dx-viz-content-on-color';
 const VIZ_CONTENT_ORANGE = '--dx-viz-content-orange';
 const VIZ_CONTENT_SUBTLE = '--dx-viz-content-subtle';
 const VIZ_CONTENT_SUBTLER = '--dx-viz-content-subtler';
@@ -287095,6 +287106,7 @@ const LIGHT = {
   [VIZ_BORDER_ACTIVE]: '#b6b6b6',
   [VIZ_BORDER_HOVERED]: '#c0c0c0',
   [VIZ_CONTENT]: '#161616',
+  [VIZ_CONTENT_ON_COLOR]: '#ffffff',
   [VIZ_CONTENT_ORANGE]: '#ad4100',
   [VIZ_CONTENT_SUBTLE]: '#444444',
   [VIZ_CONTENT_SUBTLER]: '#656565',
@@ -287131,6 +287143,7 @@ const DARK = Object.assign({}, LIGHT, {
   [VIZ_BORDER_ACTIVE]: '#656565',
   [VIZ_BORDER_HOVERED]: '#ababab',
   [VIZ_CONTENT]: '#ffffff',
+  [VIZ_CONTENT_ON_COLOR]: '#ffffff',
   [VIZ_CONTENT_ORANGE]: '#f57d48',
   [VIZ_CONTENT_SUBTLE]: '#cbcbcb',
   [VIZ_CONTENT_SUBTLER]: '#a1a1a1',
@@ -287352,7 +287365,7 @@ function buildTheme(name, fallback) {
       sliderMarker: {
         color: paint(VIZ_PRIMARY),
         font: {
-          color: paint(VIZ_BG)
+          color: paint(VIZ_CONTENT_ON_COLOR)
         },
         invalidRangeColor: paint(VIZ_DANGER)
       },

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Fluent Next: тень, Popover</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/shadow-demo.js"></script>
+</head>
+<body>
+<div id="top"></div>
+<div id="stage"><div id="target">target</div><div id="c"></div></div>
+<div id="bottom"></div>
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var q = ShadowDemo.q, wait = ShadowDemo.wait;
+  ShadowDemo.run({
+    title: "Popover",
+    note: "dxPopover рядом с серым блоком.",
+    measured: ".dx-popover-wrapper > .dx-overlay-content",
+    create: async function () {
+      $('#c').dxPopover({ visible: true, onHiding: function (e) { e.cancel = true; }, target: '#target', width: 170, height: 70, animation: null, contentTemplate: function (c) { c.text('Popover'); } });
+      await wait(400);
+      return q('.dx-popover-wrapper:not(.dx-tooltip-wrapper) > .dx-overlay-content');
+    }
+  });
+</script>
+</body>
+</html>

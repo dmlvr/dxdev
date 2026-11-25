@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Fluent Next: тень, CardView: выбор колонок</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/shadow-demo.js"></script>
+</head>
+<body>
+<div id="top"></div>
+<div id="stage"><div id="c"></div></div>
+<div id="bottom"></div>
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var q = ShadowDemo.q, wait = ShadowDemo.wait;
+  ShadowDemo.run({
+    title: "CardView: выбор колонок",
+    note: "dxCardView, открыт выбор колонок.",
+    measured: ".dx-cardview-column-chooser .dx-overlay-content",
+    create: async function () {
+      // окно по умолчанию модальное и перекрывает страницу: открываем его внутри области, без затемнения
+      DevExpress.ui.dxPopup.defaultOptions({ options: { container: '#stage', shading: false, position: { my: 'center', at: 'center', of: '#stage' } } });
+      $('#c').dxCardView({ dataSource: [{ id: 1, a: 1, b: 2 }], keyExpr: 'id', columns: ['a', 'b'], columnChooser: { enabled: true } });
+      $('#c').dxCardView('instance').showColumnChooser();
+      await wait(600);
+      // окно не должно закрываться кликами по странице (переключатель «Было / Стало», выбор темы)
+      [].slice.call(document.querySelectorAll('.dx-popup')).forEach(function (e) {
+        var p = DevExpress.ui.dxPopup.getInstance(e);
+        if (p && p.option('visible')) { p.option('onHiding', function (ev) { ev.cancel = true; }); }
+      });
+      return q('.dx-cardview-column-chooser .dx-overlay-content');
+    }
+  });
+</script>
+</body>
+</html>

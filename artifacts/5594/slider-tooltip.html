@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Fluent Next: тень, Slider: подсказка</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/shadow-demo.js"></script>
+</head>
+<body>
+<div id="top"></div>
+<div id="stage"><div id="c"></div></div>
+<div id="bottom"></div>
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var q = ShadowDemo.q, wait = ShadowDemo.wait;
+  ShadowDemo.run({
+    title: "Slider: подсказка",
+    note: "dxSlider, подсказка значения всегда видна.",
+    measured: ".dx-slider .dx-tooltip-wrapper .dx-overlay-content",
+    create: async function () {
+      $('#c').dxSlider({ width: 320, value: 40, tooltip: { enabled: true, showMode: 'always', position: 'top' } });
+      await wait(500);
+      return q('.dx-slider .dx-tooltip-wrapper .dx-overlay-content');
+    }
+  });
+</script>
+</body>
+</html>

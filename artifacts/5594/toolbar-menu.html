@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Fluent Next: тень, Toolbar: меню</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/shadow-demo.js"></script>
+</head>
+<body>
+<div id="top"></div>
+<div id="stage"><div id="c"></div></div>
+<div id="bottom"></div>
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var q = ShadowDemo.q, wait = ShadowDemo.wait;
+  ShadowDemo.run({
+    title: "Toolbar: меню",
+    note: "dxToolbar, открыто выпадающее меню (locateInMenu).",
+    measured: ".dx-dropdownmenu-popup-wrapper .dx-overlay-content",
+    create: async function () {
+      $('#c').dxToolbar({ width: 300, items: [{ text: 'Item 1', locateInMenu: 'always' }, { text: 'Item 2', locateInMenu: 'always' }] });
+      await wait(300);
+      q('#c .dx-dropdownmenu-button').click();
+      await wait(400);
+      // меню не должно закрываться кликами по странице (переключатель «Было / Стало», выбор темы)
+      [].slice.call(document.querySelectorAll('.dx-popup')).forEach(function (e) {
+        var p = DevExpress.ui.dxPopup.getInstance(e);
+        if (p && p.option('visible')) { p.option('onHiding', function (ev) { ev.cancel = true; }); }
+      });
+      return q('.dx-dropdownmenu-popup-wrapper .dx-overlay-content');
+    }
+  });
+</script>
+</body>
+</html>

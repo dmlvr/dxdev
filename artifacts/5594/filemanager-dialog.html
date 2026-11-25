@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Fluent Next: тень, FileManager: диалог</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/shadow-demo.js"></script>
+</head>
+<body>
+<div id="top"></div>
+<div id="stage"><div id="c"></div></div>
+<div id="bottom"></div>
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var q = ShadowDemo.q, wait = ShadowDemo.wait;
+  ShadowDemo.run({
+    title: "FileManager: диалог",
+    note: "dxFileManager, открыт диалог «New directory».",
+    measured: ".dx-filemanager-dialog-popup > .dx-overlay-content",
+    create: async function () {
+      $('#c').dxFileManager({ fileSystemProvider: [{ name: 'Documents', isDirectory: true }], height: 190 });
+      await wait(900);
+      var item = [].slice.call(document.querySelectorAll('#c .dx-toolbar-item')).filter(function (e) { return /New directory/.test(e.textContent); })[0];
+      // popup'ы диалогов виджет создаёт заранее скрытыми: настраиваем их до открытия, чтобы диалог сразу был внутри области без затемнения
+      document.getElementById('stage').style.minHeight = '470px';
+      [].slice.call(document.querySelectorAll('.dx-popup')).forEach(function (e) {
+        var p = DevExpress.ui.dxPopup.getInstance(e);
+        if (p) {
+          p.option({ container: '#stage', shading: false, position: { my: 'bottom', at: 'bottom', of: '#stage', offset: '0 -16' }, onHiding: function (ev) { ev.cancel = true; } });
+        }
+      });
+      (item.querySelector('.dx-button') || item).click();
+      await wait(800);
+      return q('.dx-filemanager-dialog-popup > .dx-overlay-content');
+    }
+  });
+</script>
+</body>
+</html>

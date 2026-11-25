@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Fluent Next: тень, ActionSheet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/shadow-demo.js"></script>
+</head>
+<body>
+<div id="top"></div>
+<div id="stage"><div id="c"></div></div>
+<div id="bottom"></div>
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var q = ShadowDemo.q, wait = ShadowDemo.wait;
+  ShadowDemo.run({
+    title: "ActionSheet",
+    note: "dxActionSheet в режиме нижней панели (usePopover: false), показана внутри выделенной области без затемнения.",
+    measured: ".dx-actionsheet-popup-wrapper .dx-overlay-content",
+    create: async function () {
+      $('#c').dxActionSheet({ visible: false, items: [{ text: 'Action 1' }, { text: 'Action 2' }], title: 'Action sheet', usePopover: false, animation: null, onHiding: function (e) { e.cancel = true; } });
+      // публичных опций для этого нет: держим панель внутри области страницы, без затемнения и блокировки
+      var sheet = $('#c').dxActionSheet('instance');
+      sheet._popup.option({ container: '#stage', shading: false, position: { my: 'bottom', at: 'bottom', of: '#stage' } });
+      sheet.show();
+      await wait(400);
+      return q('.dx-actionsheet-popup-wrapper .dx-overlay-content');
+    }
+  });
+</script>
+</body>
+</html>

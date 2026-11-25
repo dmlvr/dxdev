@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Fluent Next: тень, Tooltip</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/shadow-demo.js"></script>
+</head>
+<body>
+<div id="top"></div>
+<div id="stage"><div id="target">target</div><div id="c"></div></div>
+<div id="bottom"></div>
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var q = ShadowDemo.q, wait = ShadowDemo.wait;
+  ShadowDemo.run({
+    title: "Tooltip",
+    note: "dxTooltip рядом с серым блоком.",
+    measured: ".dx-tooltip-wrapper .dx-overlay-content",
+    create: async function () {
+      $('#c').dxTooltip({ visible: true, onHiding: function (e) { e.cancel = true; }, target: '#target', animation: null, contentTemplate: function (c) { c.text('Tooltip'); } });
+      await wait(400);
+      return q('.dx-tooltip-wrapper:not(.dx-slider-tooltip) .dx-overlay-content');
+    }
+  });
+</script>
+</body>
+</html>

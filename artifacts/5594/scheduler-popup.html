@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Fluent Next: тень, Scheduler: редактирование записи</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/shadow-demo.js"></script>
+</head>
+<body>
+<div id="top"></div>
+<div id="stage"><div id="c"></div></div>
+<div id="bottom"></div>
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var q = ShadowDemo.q, wait = ShadowDemo.wait;
+  ShadowDemo.run({
+    title: "Scheduler: редактирование записи",
+    note: "dxScheduler, открыто окно редактирования записи (showAppointmentPopup).",
+    measured: ".dx-scheduler-appointment-popup .dx-overlay-content",
+    create: async function () {
+      // окно по умолчанию модальное и перекрывает страницу: открываем его внутри области, без затемнения
+      document.getElementById('stage').style.minHeight = '640px';
+      DevExpress.ui.dxPopup.defaultOptions({ options: { container: '#stage', shading: false, position: { my: 'top right', at: 'top right', of: '#stage', offset: '-16 16' } } });
+      var d = ShadowDemo.date, item = { text: 'Meeting', startDate: d, endDate: new Date(2024, 0, 15, 10) };
+      $('#c').dxScheduler({ dataSource: [item], currentView: 'week', currentDate: d, views: ['week'], height: 300 });
+      await wait(600);
+      $('#c').dxScheduler('instance').showAppointmentPopup(item, false);
+      await wait(800);
+      // окно не должно закрываться кликами по странице (переключатель «Было / Стало», выбор темы)
+      [].slice.call(document.querySelectorAll('.dx-overlay')).forEach(function (e) {
+        var p = DevExpress.ui.dxPopup.getInstance(e);
+        if (p && p.option('visible')) { p.option('onHiding', function (ev) { ev.cancel = true; }); }
+      });
+      return q('.dx-scheduler-appointment-popup .dx-overlay-content');
+    }
+  });
+</script>
+</body>
+</html>

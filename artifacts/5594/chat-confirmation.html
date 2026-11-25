@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Fluent Next: тень, Chat: подтверждение</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="lib/shadow-demo.js"></script>
+</head>
+<body>
+<div id="top"></div>
+<div id="stage"><div id="c"></div></div>
+<div id="bottom"></div>
+<script src="lib/jquery.js"></script>
+<script src="lib/dx.all.js"></script>
+<script>
+  var q = ShadowDemo.q, wait = ShadowDemo.wait;
+  ShadowDemo.run({
+    title: "Chat: подтверждение",
+    note: "dxChat, окно подтверждения удаления сообщения (открыто приватным методом виджета).",
+    measured: ".dx-chat-confirmation-popup-wrapper .dx-overlay-content",
+    create: async function () {
+      // окно по умолчанию модальное и перекрывает страницу: открываем его внутри области, без затемнения
+      DevExpress.ui.dxPopup.defaultOptions({ options: { container: '#stage', shading: false, position: { my: 'center', at: 'center', of: '#stage' } } });
+      $('#c').dxChat({ user: { id: 'u' }, height: 300, items: [{ author: { id: 'u' }, text: 'hi', timestamp: ShadowDemo.date, id: 1 }] });
+      $('#c').dxChat('instance')._showDeleteConfirmationPopup({ message: { id: 1, text: 'hi', author: { id: 'u' } } });
+      await wait(600);
+      // окно не должно закрываться кликами по странице (переключатель «Было / Стало», выбор темы)
+      [].slice.call(document.querySelectorAll('.dx-popup')).forEach(function (e) {
+        var p = DevExpress.ui.dxPopup.getInstance(e);
+        if (p && p.option('visible')) { p.option('onHiding', function (ev) { ev.cancel = true; }); }
+      });
+      return q('.dx-chat-confirmation-popup-wrapper .dx-overlay-content');
+    }
+  });
+</script>
+</body>
+</html>
